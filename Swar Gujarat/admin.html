@@ -12,7 +12,7 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css?v=28">
-    <link rel="stylesheet" href="css/admin.css?v=15">
+    <link rel="stylesheet" href="css/admin.css?v=16">
     <link rel="stylesheet" href="css/responsive.css?v=28">
 </head>
 <body>
@@ -143,5 +143,77 @@
     </div>
 
     <script src="js/admin.js?v=17"></script>
+<script>
+    // Custom Select Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+        const selects = document.querySelectorAll('select');
+        selects.forEach(selectElement => {
+            // Hide original select
+            selectElement.style.display = 'none';
+
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'custom-select-wrapper';
+            selectElement.parentNode.insertBefore(wrapper, selectElement);
+            wrapper.appendChild(selectElement);
+
+            // Create custom select display
+            const customSelect = document.createElement('div');
+            customSelect.className = 'custom-select';
+            customSelect.textContent = selectElement.options[selectElement.selectedIndex].text;
+            wrapper.appendChild(customSelect);
+
+            // Create custom options container
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'custom-select-options';
+            wrapper.appendChild(optionsContainer);
+
+            // Populate options
+            Array.from(selectElement.options).forEach((option, index) => {
+                const customOption = document.createElement('div');
+                customOption.className = 'custom-option';
+                if (index === selectElement.selectedIndex) customOption.classList.add('selected');
+                customOption.textContent = option.text;
+                
+                customOption.addEventListener('click', () => {
+                    // Update original select
+                    selectElement.selectedIndex = index;
+                    // Trigger change event if needed by other scripts
+                    selectElement.dispatchEvent(new Event('change'));
+                    
+                    // Update display
+                    customSelect.textContent = option.text;
+                    
+                    // Update selected class
+                    Array.from(optionsContainer.children).forEach(child => child.classList.remove('selected'));
+                    customOption.classList.add('selected');
+                    
+                    // Close dropdown
+                    optionsContainer.classList.remove('show');
+                });
+                
+                optionsContainer.appendChild(customOption);
+            });
+
+            // Toggle dropdown
+            customSelect.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Close all other dropdowns
+                document.querySelectorAll('.custom-select-options').forEach(cont => {
+                    if (cont !== optionsContainer) cont.classList.remove('show');
+                });
+                optionsContainer.classList.toggle('show');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select-options').forEach(cont => {
+                cont.classList.remove('show');
+            });
+        });
+    });
+</script>
 </body>
 </html>
+
