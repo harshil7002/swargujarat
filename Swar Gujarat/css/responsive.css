@@ -95,98 +95,175 @@
         background-position: center center;
     }
 
-    /* Mobile Player Layout - STACKED */
-    .glass-player {
-        width: calc(100% - 30px);
-        height: auto;
-        bottom: 30px; 
-        padding: 12px 16px;
-        border-radius: 20px;
-    }
+    /* ============================
+       MOBILE PLAYER - SPOTIFY WIDGET STYLE
+       ============================ */
     
-    .player-inner {
-        flex-direction: column; /* Stack track info and buttons vertically */
-        gap: 12px;
+    .pill-player {
+        bottom: 50px;
+        left: 5%;
+        width: 90%;
+        max-width: none;
+        border-radius: 16px;
+        padding: 16px;
+        border: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
+        transform: translateX(0);
+        animation: none;
+        opacity: 1;
+    }
+
+    .pill-player-inner {
+        display: grid !important;
+        grid-template-columns: 80px 1fr;
+        grid-template-rows: auto auto;
+        gap: 8px 16px;
         align-items: center;
     }
-    
-    .track-info {
-        width: 100%;
-        justify-content: center;
+
+    .cd-container {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        width: 80px;
+        height: 80px;
+        margin: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #333;
     }
-    
+
     .player-cover {
-        width: 48px;
-        height: 48px;
-        border-radius: 10px;
-    }
-    
-    .track-details {
-        max-width: calc(100% - 60px);
-        text-align: left;
-    }
-    
-    .track-details h3 {
-        font-size: 14px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    .track-details p {
-        font-size: 12px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    .track-details span {
-        display: none; 
-    }
-    
-    .player-controls-container {
         width: 100%;
-        align-items: center;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
     }
-    
-    .progress-container {
-        display: none; 
+
+    .cd-hole {
+        display: block !important;
     }
-    
-    .playback-controls {
-        gap: 20px;
+
+    .pill-track-info {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
+        background: transparent;
+        border: none;
+        padding: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .pill-track-info h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 2px;
+        padding-top: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pill-track-info p {
+        font-size: 13px;
+        color: #b3b3b3;
+        margin-bottom: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pill-progress-container {
         width: 100%;
     }
-    
-    /* Restore all buttons */
-    #shuffle-btn, #repeat-btn, #prev-btn {
-        display: flex; 
+
+    .progress-bar-bg {
+        height: 4px;
+        border-radius: 2px;
+        background: #4f4f4f;
     }
-    
+
+    .progress-bar-fill {
+        background: #fff;
+    }
+
+    .pill-time {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 10px;
+        color: #b3b3b3;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+
+    .pill-controls {
+        grid-column: 2;
+        grid-row: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin-top: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
     .control-btn {
         width: 36px;
         height: 36px;
+        background: transparent;
+        border: none;
+        color: #fff;
     }
     
-    .play-btn {
-        width: 44px;
-        height: 44px;
+    .control-btn:hover {
+        transform: none;
+        background: transparent;
     }
-    
-    .player-extras {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        pointer-events: none; /* Let clicks pass through to player */
+
+    .pill-play-btn {
+        width: 48px !important;
+        height: 48px !important;
+        background: #fff !important;
+        border: none !important;
+        border-radius: 50% !important;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    
-    .volume-icon, .volume-bar-bg {
-        display: none; /* Hide volume on mobile */
+
+    .pill-play-btn svg {
+        color: #000;
+        fill: #000;
+        width: 24px;
+        height: 24px;
     }
-    
-    /* Hide Categories entirely on Mobile */
+
+    .pill-play-btn:hover {
+        background: #e0e0e0 !important;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .volume-icon, .volume-bar-bg, .player-extras {
+        display: none !important;
+    }
+
+    /* ============================
+       HIDE CATEGORIES ON MOBILE
+       ============================ */
     .category-toggle-btn {
         display: none !important;
     }
@@ -195,111 +272,77 @@
         display: none !important;
     }
 
-    /* Up Next Card Mobile */
+    /* ============================
+       UP NEXT CARD - MOBILE
+       ============================ */
     .up-next-card {
-        bottom: 128px; /* Sit above the player on mobile */
-        right: 105px;
-        width: 240px;
+        bottom: auto;
+        top: auto;
+        right: 5%;
+        left: 5%;
+        width: 90%;
+        position: fixed;
+        bottom: 224px;
+        border-radius: 16px;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        transform: translateY(40px) scale(0.95);
     }
-    
-    /* Creator Watermark Mobile */
-    .creator-watermark {
-        bottom: 8px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        font-size: 10px;
-        animation: none; 
-        transform: none;
+    .up-next-card.show {
+        transform: translateY(0) scale(1);
     }
-    
-    /* Main Content Padding */
+
+    /* ============================
+       MAIN CONTENT PADDING
+       ============================ */
     main {
-        padding-bottom: 180px; 
+        padding-bottom: 200px;
     }
-    /* Mobile Hero Title */
-    .mobile-hero-title {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: absolute;
-        top: 16%;
-        left: 25%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        text-align: center;
-        animation: floatTitle 6s ease-in-out infinite;
-        pointer-events: none;
-        width: 100%;
-    }
-
-    .mobile-hero-title .gujarati-text {
-        font-family: 'Noto Sans Gujarati', sans-serif;
-        font-size: 85px;
-        font-weight: 700;
-        color: #fdfbf7;
-        margin: 0;
-        line-height: 1;
-        letter-spacing: -2px;
-        text-shadow: 0 4px 20px rgba(160, 156, 156, 0.8), 0.8), 0 0 40px rgba(232, 93, 42, 0.4);
-        position: relative;
-        background: linear-gradient(180deg, #ffffff 0%, #e8e2d5 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: glowPulse 4s infinite alternate;
-    }
-
-    .mobile-hero-title .english-text {
-        font-family: 'Inter', sans-serif;
-        font-size: 24px;
-        font-weight: 600;
-        letter-spacing: 12px;
-        color: #fff;
-        margin: 5px 0 15px 12px;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-    }
-
-    .ornament-divider {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 200px;
-    }
-
-    .ornament-divider .line {
-        flex: 1;
-        height: 1.5px;
-        background: linear-gradient(90deg, transparent, #E85D2A);
-    }
-
-    .ornament-divider .line:last-child {
-        background: linear-gradient(270deg, transparent, #E85D2A);
-    }
-
-    .ornament-divider .diamond {
-        width: 8px;
-        height: 8px;
-        background: #E85D2A;
-        transform: rotate(45deg);
-        box-shadow: 0 0 10px #E85D2A;
-        animation: spinDiamond 8s linear infinite;
-    }
-
-    @keyframes floatTitle {
-        0%, 100% { transform: translate(-50%, -50%); }
-        50% { transform: translate(-50%, calc(-50% - 15px)); }
-    }
-
-    @keyframes glowPulse {
-        0% { filter: drop-shadow(0 0 10px rgba(232, 93, 42, 0.2)); }
-        100% { filter: drop-shadow(0 0 30px rgba(232, 93, 42, 0.6)); }
-    }
-
-    @keyframes spinDiamond {
-        0% { transform: rotate(45deg); }
-        100% { transform: rotate(405deg); }
-    }
-
-
+}
+.progress-bar-bg {
+    -webkit-tap-highlight-color: transparent;
 }
 
+/* Smooth transitions for touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .mobile-btn {
+        transition: all 0.15s ease;
+    }
+    
+    .progress-bar-bg {
+        cursor: pointer;
+    }
+}
+
+/* Album cover rotation animations */
+.mobile-cover-image.spin {
+    animation: albumSpinCompact 3s linear infinite;
+}
+
+.mobile-cover-image {
+    animation: none;
+    transition: animation 0.3s ease;
+}
+
+/* Handle overflow for track titles on smallest screens */
+@media (max-width: 320px) {
+    .mobile-title {
+        font-size: 14px;
+    }
+    .mobile-artist {
+        font-size: 10px;
+    }
+    .mobile-cover-section {
+        min-height: 120px;
+        aspect-ratio: 1 / 0.5;
+    }
+    .mobile-buttons-section {
+        height: 60px;
+    }
+    .mobile-btn {
+        height: 60px;
+    }
+    main {
+        padding-bottom: 350px;
+    }
+}

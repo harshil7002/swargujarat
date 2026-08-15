@@ -16,9 +16,18 @@ body {
     max-width: 1100px;
 }
 
+#dashboard-panels {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 30px;
+    width: 100%;
+}
+
 @media (max-width: 900px) {
     #dashboard-panels {
-        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column;
+        gap: 20px;
     }
     .admin-container.dashboard-mode {
         max-width: 600px;

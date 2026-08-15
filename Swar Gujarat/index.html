@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css?v=24">
-    <link rel="stylesheet" href="css/responsive.css?v=20">
+    <link rel="stylesheet" href="css/style.css?v=28">
+    <link rel="stylesheet" href="css/responsive.css?v=28">
 </head>
 <body>
     <!-- Background Elements -->
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="pill-time">
-                        <span id="current-time">0:00</span> / <span id="total-time">4:32</span>
+                        <span id="current-time">0:00</span> <span id="total-time">4:32</span>
                     </div>
                 </div>
 
@@ -109,15 +109,18 @@
                 </div>
             </div>
 
-            <!-- Up Next Card -->
-            <div id="up-next-card" class="up-next-card">
+        </div>
+
+        <!-- Up Next Card - Enhanced -->
+        <div id="up-next-card" class="up-next-card">
+            <div class="up-next-header">
                 <p class="up-next-label">Up Next</p>
-                <div class="up-next-info">
-                    <img id="up-next-cover" src="" alt="Next">
-                    <div style="flex: 1; min-width: 0;">
-                        <h4 id="up-next-title">Song</h4>
-                        <p id="up-next-artist">Artist</p>
-                    </div>
+            </div>
+            <div class="up-next-info">
+                <img id="up-next-cover" src="" alt="Next" class="up-next-thumbnail">
+                <div class="up-next-details">
+                    <h4 id="up-next-title" class="up-next-title">Song</h4>
+                    <p id="up-next-artist" class="up-next-artist">Artist</p>
                 </div>
             </div>
         </div>
