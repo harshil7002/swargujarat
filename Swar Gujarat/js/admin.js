@@ -138,10 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadSongs() {
         try {
-            const res = await fetch('/api/songs');
-            if (res.ok) {
-                const data = await res.json();
-                return Array.isArray(data) ? data : [];
+            const upstashUrl = "https://integral-puma-108532.upstash.io";
+            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
+            
+            const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                let cloudSongs = [];
+                if (data.result) {
+                    cloudSongs = typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
+                }
+                if (Array.isArray(cloudSongs)) return cloudSongs;
             }
         } catch (e) {
             console.warn("API failed, using local storage");
@@ -152,10 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
     async function saveSongs(songs) {
         localStorage.setItem('customSongs', JSON.stringify(songs)); // Local fallback
         try {
-            await fetch('/api/songs', {
+            const upstashUrl = "https://integral-puma-108532.upstash.io";
+            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
+            
+            await fetch(`${upstashUrl}/set/swar_playlist`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ songs })
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(songs)
             });
         } catch (e) {
             console.warn("Failed to sync to cloud.");

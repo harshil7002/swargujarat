@@ -10,10 +10,21 @@ class App {
         let customSongs = [];
 
         try {
-            // Attempt to fetch from Vercel Serverless API (Cloud Database)
-            const response = await fetch('/api/songs');
+            // Fetch directly from Upstash Redis (Cloud Database)
+            const upstashUrl = "https://integral-puma-108532.upstash.io";
+            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
+            
+            const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
             if (response.ok) {
-                const cloudSongs = await response.json();
+                const data = await response.json();
+                let cloudSongs = [];
+                if (data.result) {
+                    cloudSongs = typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
+                }
+                
                 if (Array.isArray(cloudSongs) && cloudSongs.length > 0) {
                     customSongs = cloudSongs;
                     console.log("Successfully loaded songs from Cloud Database!");
@@ -74,14 +85,31 @@ class App {
         
         const pingServer = async () => {
             try {
-                const res = await fetch('/api/ping', {
+                const upstashUrl = "https://integral-puma-108532.upstash.io";
+                const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
+                
+                const now = Date.now();
+                const expireTime = now - 45000;
+                
+                const pipeline = [
+                    ["ZADD", "active_users", now.toString(), sessionId],
+                    ["ZREMRANGEBYSCORE", "active_users", "-inf", expireTime.toString()],
+                    ["ZCARD", "active_users"]
+                ];
+                
+                const res = await fetch(`${upstashUrl}/pipeline`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ sessionId })
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(pipeline)
                 });
+                
                 if (res.ok) {
-                    const data = await res.json();
-                    countEl.textContent = data.active || 1;
+                    const results = await res.json();
+                    let activeCount = 1;
+                    if (Array.isArray(results) && results[2] && results[2].result !== undefined) {
+                        activeCount = results[2].result;
+                    }
+                    countEl.textContent = activeCount;
                 }
             } catch (e) {
                 console.warn("Ping failed, showing 1");
