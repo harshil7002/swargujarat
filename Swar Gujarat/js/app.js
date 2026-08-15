@@ -136,7 +136,10 @@ class App {
                     });
                 }
                 
-                // Shuffle the filtered songs into random order (Fisher-Yates)
+                // Update the visual list of songs in the sidebar
+                this.renderSongList(filteredSongs);
+                
+                // Shuffle the filtered songs into random order (Fisher-Yates) for playback
                 for (let i = filteredSongs.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [filteredSongs[i], filteredSongs[j]] = [filteredSongs[j], filteredSongs[i]];
@@ -153,9 +156,66 @@ class App {
                     }, 500);
                 }
                 
-                // Close drawer on mobile
-                sidebar.classList.remove('open');
+                // On mobile, don't close sidebar immediately so they can see the songs
+                // sidebar.classList.remove('open'); 
             });
+        });
+        
+        // Initial render for 'All'
+        this.renderSongList(this.songs);
+    }
+    
+    renderSongList(songs) {
+        const listContainer = document.getElementById('category-song-list');
+        if (!listContainer) return;
+        
+        listContainer.innerHTML = '';
+        
+        if (songs.length === 0) {
+            listContainer.innerHTML = '<p style="color: rgba(255,255,255,0.5); font-size: 12px; text-align: center; margin-top: 10px;">No songs in this category</p>';
+            return;
+        }
+        
+        songs.forEach((song, index) => {
+            const songEl = document.createElement('div');
+            songEl.style.display = 'flex';
+            songEl.style.alignItems = 'center';
+            songEl.style.gap = '10px';
+            songEl.style.padding = '8px';
+            songEl.style.background = 'rgba(255, 255, 255, 0.05)';
+            songEl.style.borderRadius = '8px';
+            songEl.style.cursor = 'pointer';
+            songEl.style.transition = 'background 0.2s';
+            
+            songEl.addEventListener('mouseover', () => songEl.style.background = 'rgba(255, 255, 255, 0.15)');
+            songEl.addEventListener('mouseout', () => songEl.style.background = 'rgba(255, 255, 255, 0.05)');
+            
+            songEl.addEventListener('click', () => {
+                if (window.player) {
+                    // Find index of this specific song in the current active player playlist
+                    const playerIndex = window.player.playlist.findIndex(s => s.id === song.id);
+                    if (playerIndex !== -1) {
+                        window.player.loadTrack(playerIndex);
+                        window.player.play();
+                    } else {
+                        // Fallback: reload this song and play it
+                        window.player.loadPlaylist([song, ...window.player.playlist.filter(s => s.id !== song.id)], 0);
+                        window.player.play();
+                    }
+                }
+                // Close mobile sidebar on song select
+                const sidebar = document.getElementById('category-sidebar');
+                if (sidebar) sidebar.classList.remove('open');
+            });
+            
+            songEl.innerHTML = `
+                <img src="${song.cover}" style="width: 36px; height: 36px; border-radius: 4px; object-fit: cover;">
+                <div style="flex: 1; min-width: 0;">
+                    <h4 style="margin: 0; font-size: 12px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${song.title}</h4>
+                    <p style="margin: 2px 0 0 0; font-size: 10px; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${song.artist}</p>
+                </div>
+            `;
+            listContainer.appendChild(songEl);
         });
     }
 

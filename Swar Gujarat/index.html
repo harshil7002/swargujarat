@@ -58,7 +58,7 @@
         <!-- Categories Glass Sidebar -->
         <div id="category-sidebar" class="category-sidebar">
             <h3 class="category-title">Playlists</h3>
-            <div class="category-list" id="category-list">
+            <div class="category-list" id="category-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 10px;">
                 <button class="category-btn active" data-cat="All">All Songs</button>
                 <button class="category-btn" data-cat="Garba">Garba</button>
                 <button class="category-btn" data-cat="Gujarati Love">Gujarati Love</button>
@@ -67,6 +67,11 @@
                 <button class="category-btn" data-cat="Mataji Songs">Mataji Songs</button>
                 <button class="category-btn" data-cat="Krishna Songs">Krishna Songs</button>
                 <button class="category-btn" data-cat="Wedding Songs">Wedding Songs</button>
+            </div>
+            
+            <h3 class="category-title">Songs in Category</h3>
+            <div id="category-song-list" class="category-song-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                <!-- Songs will be dynamically injected here -->
             </div>
         </div>
 
