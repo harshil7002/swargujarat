@@ -87,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 try {
+                    const defaultCategoryElement = document.getElementById('default-category');
+                    const defaultCategory = defaultCategoryElement ? defaultCategoryElement.value : 'All Songs';
+                    
                     // Use noembed to fetch title and author without API key
                     const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
                     const data = await res.json();
@@ -98,14 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const title = data.title || 'Unknown Title';
                     const artist = defaultArtist || (data.author_name || 'YouTube');
-                    const category = document.getElementById('default-category').value;
                     const cover = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
                     
                     const newTrack = {
                         id: videoId,
                         title: title,
                         artist: artist,
-                        category: category,
+                        category: defaultCategory,
                         album: 'YouTube',
                         cover: cover,
                         genre: 'Custom',

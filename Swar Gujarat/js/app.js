@@ -142,9 +142,9 @@ class App {
                     [filteredSongs[i], filteredSongs[j]] = [filteredSongs[j], filteredSongs[i]];
                 }
                 
-                // Load shuffled playlist
+                // Load shuffled playlist (even if empty)
                 if (window.player) {
-                    window.player.loadPlaylist(filteredSongs.length > 0 ? filteredSongs : this.songs, 0);
+                    window.player.loadPlaylist(filteredSongs, 0);
                     // Force play if possible
                     setTimeout(() => {
                         if (window.player.player && typeof window.player.player.playVideo === 'function' && filteredSongs.length > 0) {

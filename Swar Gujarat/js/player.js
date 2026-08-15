@@ -103,7 +103,26 @@ class MusicPlayer {
     loadPlaylist(songs, startIndex = 0) {
         this.playlist = songs;
         this.currentIndex = startIndex;
+        
+        if (this.playlist.length === 0) {
+            this.clearUI();
+            return;
+        }
+
         this.loadTrack(this.currentIndex);
+    }
+
+    clearUI() {
+        if (this.titleEl) this.titleEl.textContent = 'No Songs Found';
+        if (this.artistEl) this.artistEl.textContent = 'Empty Category';
+        if (this.coverEl) this.coverEl.src = 'assets/swar.png'; // Default
+        
+        if (ytPlayerReady && ytPlayer && typeof ytPlayer.stopVideo === 'function') {
+            ytPlayer.stopVideo();
+        }
+        
+        const upNextCard = document.getElementById('up-next-card');
+        if (upNextCard) upNextCard.classList.remove('show');
     }
 
     loadTrack(index) {
