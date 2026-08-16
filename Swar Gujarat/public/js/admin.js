@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/check-auth', { credentials: 'same-origin' }).then(res => res.json()).then(data => {
         if (data.authenticated) {
             loginPanel.style.display = 'none';
-            dashboardPanels.style.display = 'grid';
+            dashboardPanels.style.display = 'flex';
             adminContainer.classList.add('dashboard-mode');
             adminHeaderTitle.textContent = 'Admin Dashboard';
             logoutBtn.style.display = 'block';
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (data.success) {
                     loginPanel.style.display = 'none';
-                    dashboardPanels.style.display = 'grid';
+                    dashboardPanels.style.display = 'flex';
                     adminContainer.classList.add('dashboard-mode');
                     adminHeaderTitle.textContent = 'Admin Dashboard';
                     logoutBtn.style.display = 'block';
