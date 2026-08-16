@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swar Gujarat - Add Song</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css?v=28">
+    <link rel="stylesheet" href="css/admin.css?v=16">
+    <link rel="stylesheet" href="css/responsive.css?v=31">
+</head>
+<body>
+    <!-- Background Elements -->
+    <video class="site-background-video" id="site-bg-video" autoplay loop muted playsinline>
+        <source src="assets/swar.mp4" type="video/mp4">
+    </video>
+    <div class="site-background" id="site-bg-image"></div>
+    <div class="site-overlay"></div>
+    
+    <!-- Desktop Only Warning -->
+    <div class="desktop-only-warning">
+        <h2>Access Restricted</h2>
+        <p>The Admin Dashboard is only accessible from a PC or Laptop.</p>
+        <a href="index.html" class="back-link" style="display: inline-block; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 8px; text-decoration: none; color: #fff;">Return to Home</a>
+    </div>
+
+    <!-- Admin Container -->
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Login</h1>
+            <button id="logout-btn" class="back-link" style="border: none; background: transparent; cursor: pointer; font-family: inherit; color: rgba(255,255,255,0.7); display: none;">Logout</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="admin-panel" id="login-panel">
+            <form id="login-form" autocomplete="off">
+                <!-- Fake hidden fields to trick Chrome's aggressive autofill -->
+                <input style="display:none" type="text" name="fakeusernameremembered"/>
+                <input style="display:none" type="password" name="fakepasswordremembered"/>
+                
+                <div class="form-group">
+                    <label for="admin-id">Admin ID</label>
+                    <input type="text" id="admin-id" placeholder="Enter ID" spellcheck="false" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly');">
+                </div>
+                <div class="form-group">
+                    <label for="admin-pass">Password</label>
+                    <input type="password" id="admin-pass" placeholder="Enter Password" autocomplete="new-password" required readonly onfocus="this.removeAttribute('readonly');">
+                </div>
+                <p id="login-error" style="color: #ff5252; font-size: 13px; margin-top: -10px; margin-bottom: 15px; display: none;">Invalid ID or Password</p>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+
+        <!-- Dashboard (Hidden by default) -->
+        <div id="dashboard-panels" style="display: none;">
+            
+            <!-- Add Song Panel -->
+            <div class="admin-panel" id="add-song-panel" style="margin: 0;">
+                <div class="panel-header" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 24px; margin: 0;">Add New Song</h2>
+                </div>
+                <form id="add-song-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="yt-urls">YouTube URLs</label>
+                        <textarea id="yt-urls" rows="6" placeholder="Paste YouTube links here...&#10;You can paste one link, or multiple links (one per line)!" spellcheck="false" autocomplete="off" required></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="default-artist" style="font-size: 13px; color: rgba(255,255,255,0.7);">Default Artist Name (Optional)</label>
+                        <input type="text" id="default-artist" placeholder="Apply to all added songs..." spellcheck="false" autocomplete="off" style="padding: 10px 14px; font-size: 14px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="default-category" style="font-size: 13px; color: rgba(255,255,255,0.7);">Song Category</label>
+                        <select id="default-category" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; outline: none; cursor: pointer;">
+                            <option value="Garba" style="background: #111;">Garba</option>
+                            <option value="Gujarati Love" style="background: #111;">Gujarati Love</option>
+                            <option value="Gujarati Film Songs" style="background: #111;">Gujarati Film Songs</option>
+                            <option value="Gujarati Bhajan" style="background: #111;">Gujarati Bhajan</option>
+                            <option value="Mataji Songs" style="background: #111;">Mataji Songs</option>
+                            <option value="Krishna Songs" style="background: #111;">Krishna Songs</option>
+                            <option value="Wedding Songs" style="background: #111;">Wedding Songs</option>
+                        </select>
+                    </div>
+                    
+                    <p id="bulk-status" style="color: #00e676; font-size: 13px; margin-bottom: 15px; display: none;">Processing...</p>
+                    <button type="submit" class="submit-btn" id="bulk-submit-btn">Auto-Fetch & Add Songs</button>
+                </form>
+                
+                <div id="preview-area" class="preview-area" style="display: none;">
+                    <h3>Successfully Added!</h3>
+                    <div id="preview-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                        <!-- Preview cards will be injected here -->
+                    </div>
+                </div>
+            </div>
+            
+                <!-- Category Stats / Manage triggers -->
+                <div id="category-stats-container" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; color: rgba(255,255,255,0.8);">Manage Categories</h3>
+                    <div id="category-buttons" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <!-- Buttons injected via JS -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <!-- Manage Playlist Modal -->
+    <div id="manage-modal-overlay" class="modal-overlay">
+        <div class="modal-box manage-modal-box" style="max-width: 1000px; width: 95%;">
+            <div class="panel-header" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h2 id="manage-modal-title" style="font-size: 24px; margin: 0;">Manage Playlist</h2>
+                <button id="close-manage-modal" class="modal-btn cancel">Close</button>
+            </div>
+            <div id="manage-song-list" class="horizontal-scroll-grid">
+                <!-- Song items will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Overlay -->
+    <div id="custom-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-title">Confirm</h3>
+            <p id="modal-message" style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px;"></p>
+            <div id="modal-inputs" style="display: none; margin-top: 15px;">
+                <input type="text" id="modal-input-1" placeholder="Title" spellcheck="false" autocomplete="off" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; margin-bottom: 10px; outline: none;">
+                <input type="text" id="modal-input-2" placeholder="Artist" spellcheck="false" autocomplete="off" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; outline: none;">
+                <select id="modal-input-3" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; margin-top: 10px; outline: none; cursor: pointer;">
+                    <option value="Garba" style="background: #111;">Garba</option>
+                    <option value="Gujarati Love" style="background: #111;">Gujarati Love</option>
+                    <option value="Gujarati Film Songs" style="background: #111;">Gujarati Film Songs</option>
+                    <option value="Gujarati Bhajan" style="background: #111;">Gujarati Bhajan</option>
+                    <option value="Mataji Songs" style="background: #111;">Mataji Songs</option>
+                    <option value="Krishna Songs" style="background: #111;">Krishna Songs</option>
+                    <option value="Wedding Songs" style="background: #111;">Wedding Songs</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button id="modal-cancel-btn" class="modal-btn cancel">Cancel</button>
+                <button id="modal-confirm-btn" class="modal-btn confirm">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js?v=21"></script>
+<script>
+    // Custom Select Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+        const selects = document.querySelectorAll('select');
+        selects.forEach(selectElement => {
+            // Hide original select
+            selectElement.style.display = 'none';
+
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'custom-select-wrapper';
+            selectElement.parentNode.insertBefore(wrapper, selectElement);
+            wrapper.appendChild(selectElement);
+
+            // Create custom select display
+            const customSelect = document.createElement('div');
+            customSelect.className = 'custom-select';
+            customSelect.textContent = selectElement.options[selectElement.selectedIndex].text;
+            wrapper.appendChild(customSelect);
+
+            // Create custom options container
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'custom-select-options';
+            wrapper.appendChild(optionsContainer);
+
+            // Populate options
+            Array.from(selectElement.options).forEach((option, index) => {
+                const customOption = document.createElement('div');
+                customOption.className = 'custom-option';
+                if (index === selectElement.selectedIndex) customOption.classList.add('selected');
+                customOption.textContent = option.text;
+                
+                customOption.addEventListener('click', () => {
+                    // Update original select
+                    selectElement.selectedIndex = index;
+                    // Trigger change event if needed by other scripts
+                    selectElement.dispatchEvent(new Event('change'));
+                    
+                    // Update display
+                    customSelect.textContent = option.text;
+                    
+                    // Update selected class
+                    Array.from(optionsContainer.children).forEach(child => child.classList.remove('selected'));
+                    customOption.classList.add('selected');
+                    
+                    // Close dropdown
+                    optionsContainer.classList.remove('show');
+                });
+                
+                optionsContainer.appendChild(customOption);
+            });
+
+            // Toggle dropdown
+            customSelect.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Close all other dropdowns
+                document.querySelectorAll('.custom-select-options').forEach(cont => {
+                    if (cont !== optionsContainer) cont.classList.remove('show');
+                });
+                optionsContainer.classList.toggle('show');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select-options').forEach(cont => {
+                cont.classList.remove('show');
+            });
+        });
+    });
+</script>
+</body>
+</html>
+
