@@ -17,15 +17,21 @@ body {
 }
 
 #dashboard-panels {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     gap: 30px;
     width: 100%;
 }
 
+#dashboard-panels > .admin-panel {
+    flex: 1;
+    min-width: 0;
+}
+
 @media (max-width: 900px) {
     #dashboard-panels {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 20px;
     }
     .admin-container.dashboard-mode {
