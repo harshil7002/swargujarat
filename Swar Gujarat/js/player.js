@@ -34,6 +34,27 @@ window.onYouTubeIframeAPIReady = function() {
             },
             'onStateChange': (event) => {
                 if (window.player) window.player.onYTStateChange(event);
+            },
+            'onError': (event) => {
+                console.warn("YouTube Player Error", event.data);
+                
+                const now = Date.now();
+                if (!window.player.lastErrorTime || now - window.player.lastErrorTime > 2000) {
+                    window.player.errorCount = 1;
+                } else {
+                    window.player.errorCount++;
+                }
+                window.player.lastErrorTime = now;
+                
+                if (!navigator.onLine || window.player.errorCount > 3) {
+                    console.warn("Offline or too many errors. Stopping playback.");
+                    if (window.player) window.player.syncUIPlayState(false);
+                    return;
+                }
+                
+                if (window.player) {
+                    setTimeout(() => window.player.nextTrack(), 1000);
+                }
             }
         }
     });

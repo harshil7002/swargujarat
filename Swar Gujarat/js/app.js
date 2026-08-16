@@ -10,13 +10,8 @@ class App {
         let customSongs = [];
 
         try {
-            // Fetch directly from Upstash Redis (Cloud Database)
-            const upstashUrl = "https://integral-puma-108532.upstash.io";
-            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
-            
-            const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            // Fetch from local API route
+            const response = await fetch(`/api/songs`);
             
             if (response.ok) {
                 const data = await response.json();
@@ -85,22 +80,10 @@ class App {
         
         const pingServer = async () => {
             try {
-                const upstashUrl = "https://integral-puma-108532.upstash.io";
-                const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
-                
-                const now = Date.now();
-                const expireTime = now - 45000;
-                
-                const pipeline = [
-                    ["ZADD", "active_users", now.toString(), sessionId],
-                    ["ZREMRANGEBYSCORE", "active_users", "-inf", expireTime.toString()],
-                    ["ZCARD", "active_users"]
-                ];
-                
-                const res = await fetch(`${upstashUrl}/pipeline`, {
+                const res = await fetch(`/api/ping`, {
                     method: 'POST',
-                    headers: { Authorization: `Bearer ${token}` },
-                    body: JSON.stringify(pipeline)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId })
                 });
                 
                 if (res.ok) {
@@ -159,8 +142,8 @@ class App {
                 if (selectedCat !== 'All') {
                     filteredSongs = this.songs.filter(song => {
                         // Handle legacy songs that might not have a category yet
-                        const songCat = song.category || 'All Songs';
-                        return songCat.includes(selectedCat);
+                        const songCat = String(song.category || 'All Songs').toLowerCase();
+                        return songCat.includes(selectedCat.toLowerCase());
                     });
                 }
                 

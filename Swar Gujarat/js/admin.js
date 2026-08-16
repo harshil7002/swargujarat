@@ -10,21 +10,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminHeaderTitle = document.querySelector('.admin-header h1');
     const logoutBtn = document.getElementById('logout-btn');
 
+    // Check if already authenticated
+    fetch('/api/check-auth').then(res => res.json()).then(data => {
+        if (data.authenticated) {
+            loginPanel.style.display = 'none';
+            dashboardPanels.style.display = 'grid';
+            adminContainer.classList.add('dashboard-mode');
+            adminHeaderTitle.textContent = 'Admin Dashboard';
+            logoutBtn.style.display = 'block';
+            renderManageList();
+        }
+    }).catch(e => {});
+
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('admin-id').value;
             const pass = document.getElementById('admin-pass').value;
 
-            if (id === 'Harshil' && pass === 'Harshil@1202') {
-                loginPanel.style.display = 'none';
-                dashboardPanels.style.display = 'grid';
-                adminContainer.classList.add('dashboard-mode');
-                adminHeaderTitle.textContent = 'Admin Dashboard';
-                logoutBtn.style.display = 'block';
-                loginError.style.display = 'none';
-                renderManageList();
-            } else {
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, pass })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    loginPanel.style.display = 'none';
+                    dashboardPanels.style.display = 'grid';
+                    adminContainer.classList.add('dashboard-mode');
+                    adminHeaderTitle.textContent = 'Admin Dashboard';
+                    logoutBtn.style.display = 'block';
+                    loginError.style.display = 'none';
+                    renderManageList();
+                } else {
+                    loginError.textContent = data.error || 'Invalid ID or Password';
+                    loginError.style.display = 'block';
+                }
+            } catch (err) {
+                loginError.textContent = 'Server Error. Please try again.';
                 loginError.style.display = 'block';
             }
         });
@@ -32,7 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Logout Logic ---
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+            } catch (e) {}
+            
             document.getElementById('admin-id').value = '';
             document.getElementById('admin-pass').value = '';
             loginPanel.style.display = 'block';
@@ -138,12 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadSongs() {
         try {
-            const upstashUrl = "https://integral-puma-108532.upstash.io";
-            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
-            
-            const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await fetch(`/api/songs`);
             if (response.ok) {
                 const data = await response.json();
                 let cloudSongs = [];
@@ -161,13 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function saveSongs(songs) {
         localStorage.setItem('customSongs', JSON.stringify(songs)); // Local fallback
         try {
-            const upstashUrl = "https://integral-puma-108532.upstash.io";
-            const token = "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
-            
-            await fetch(`${upstashUrl}/set/swar_playlist`, {
+            await fetch(`/api/songs`, {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(songs)
@@ -331,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         track.title = result.title.trim() || track.title;
         track.artist = result.artist.trim() || track.artist;
-        track.category = result.category || 'All Songs';
+        track.category = (result.category || 'All Songs').trim();
         
         customSongs[index] = track;
         await saveSongs(customSongs);
@@ -351,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function extractYouTubeID(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
 }

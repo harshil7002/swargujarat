@@ -89,10 +89,13 @@
     
     .site-background {
         display: block !important; /* Show image on mobile */
-        height: 100dvh;
-        background-image: url('../assets/background/Gujarat.jpg?v=1');
+        height: 100%; /* Better than 100dvh for fixed elements */
+        background-image: url('../assets/background/Gujarat.jpg?v=2');
         background-size: cover;
         background-position: center center;
+        animation: none; /* Disable transform animation to fix position: fixed scrolling bug */
+        transform: none;
+        will-change: auto;
     }
 
     /* ============================
