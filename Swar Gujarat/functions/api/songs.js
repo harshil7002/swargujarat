@@ -1,16 +1,20 @@
 export async function onRequestGet(context) {
     const { env } = context;
-    const upstashUrl = env.UPSTASH_URL || "https://integral-puma-108532.upstash.io";
+    const upstashUrl = (env.UPSTASH_URL || "https://integral-puma-108532.upstash.io").replace(/\/$/, '');
     const token = env.UPSTASH_TOKEN || "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
     
     try {
         const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` },
+            cache: "no-store"
         });
         const data = await response.json();
         return new Response(JSON.stringify(data), {
             status: 200,
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
+            }
         });
     } catch (e) {
         return new Response(JSON.stringify({ error: "Database error" }), { status: 500 });
@@ -29,7 +33,7 @@ export async function onRequestPost(context) {
     }
     
     // Save to Upstash
-    const upstashUrl = env.UPSTASH_URL || "https://integral-puma-108532.upstash.io";
+    const upstashUrl = (env.UPSTASH_URL || "https://integral-puma-108532.upstash.io").replace(/\/$/, '');
     const token = env.UPSTASH_TOKEN || "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
     
     try {

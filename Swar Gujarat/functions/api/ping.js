@@ -1,6 +1,6 @@
 export async function onRequestPost(context) {
     const { request, env } = context;
-    const upstashUrl = env.UPSTASH_URL || "https://integral-puma-108532.upstash.io";
+    const upstashUrl = (env.UPSTASH_URL || "https://integral-puma-108532.upstash.io").replace(/\/$/, '');
     const token = env.UPSTASH_TOKEN || "gQAAAAAAAaf0AAIgcDFhZGFkNjdmNDllNWM0MjEzYTYwYmM0OTBmNzM0MzFkYQ";
     
     try {
@@ -29,7 +29,10 @@ export async function onRequestPost(context) {
         const results = await res.json();
         return new Response(JSON.stringify(results), {
             status: 200,
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate"
+            }
         });
     } catch (e) {
         return new Response(JSON.stringify({ error: "Ping failed" }), { status: 500 });
