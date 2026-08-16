@@ -1,0 +1,351 @@
+/* Responsive Styles */
+
+@media (max-width: 1024px) {
+    .glass-header {
+        padding: 0 20px;
+    }
+    
+    .desktop-nav {
+        gap: 16px;
+    }
+    
+    .hero-title {
+        font-size: 60px;
+    }
+    
+    .hero-subtitle {
+        font-size: 40px;
+    }
+    
+    .glass-player {
+        width: 90%;
+        bottom: 20px;
+    }
+    
+    .track-info {
+        width: 35%;
+    }
+    
+    .player-controls-container {
+        width: 45%;
+    }
+    
+    .player-extras {
+        width: 20%;
+    }
+    
+    .volume-bar-bg {
+        width: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hide Desktop Nav */
+    .desktop-nav {
+        display: none;
+    }
+    
+    .header-actions {
+        gap: 12px;
+    }
+    
+    .lang-selector, .login-btn {
+        display: none;
+    }
+    
+    /* Hero Adjustments */
+    .hero-section {
+        padding: 40px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .hero-title {
+        font-size: 40px;
+    }
+    
+    .hero-subtitle {
+        font-size: 24px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Content Sections */
+    .content-section {
+        padding: 20px;
+    }
+    
+    /* Background Swap on Mobile */
+    .site-background-video {
+        display: none !important; /* Hide video on mobile */
+    }
+    
+    .site-background {
+        display: block !important; /* Show image on mobile */
+        height: 100%; /* Better than 100dvh for fixed elements */
+        background-image: url('../assets/background/Gujarat.jpg?v=2');
+        background-size: cover;
+        background-position: center center;
+        animation: none; /* Disable transform animation to fix position: fixed scrolling bug */
+        transform: none;
+        will-change: auto;
+    }
+
+    /* ============================
+       MOBILE PLAYER - SPOTIFY WIDGET STYLE
+       ============================ */
+    
+    .pill-player {
+        bottom: 50px;
+        left: 5%;
+        width: 90%;
+        max-width: none;
+        border-radius: 16px;
+        padding: 16px;
+        border: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
+        transform: translateX(0);
+        animation: none;
+        opacity: 1;
+    }
+
+    .pill-player-inner {
+        display: grid !important;
+        grid-template-columns: 80px 1fr;
+        grid-template-rows: auto auto;
+        gap: 8px 16px;
+        align-items: center;
+    }
+
+    .cd-container {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        width: 80px;
+        height: 80px;
+        margin: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #333;
+    }
+
+    .player-cover {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .cd-hole {
+        display: block !important;
+    }
+
+    .pill-track-info {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        padding: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .pill-track-info h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 2px;
+        padding-top: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pill-track-info p {
+        font-size: 13px;
+        color: #b3b3b3;
+        margin-bottom: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pill-progress-container {
+        width: 100%;
+    }
+
+    .progress-bar-bg {
+        height: 4px;
+        border-radius: 2px;
+        background: #4f4f4f;
+    }
+
+    .progress-bar-fill {
+        background: #fff;
+    }
+
+    .pill-time {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 10px;
+        color: #b3b3b3;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+
+    .pill-controls {
+        grid-column: 2;
+        grid-row: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin-top: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .control-btn {
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border: none;
+        color: #fff;
+    }
+    
+    .control-btn:hover {
+        transform: none;
+        background: transparent;
+    }
+
+    .pill-play-btn {
+        width: 48px !important;
+        height: 48px !important;
+        background: #fff !important;
+        border: none !important;
+        border-radius: 50% !important;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pill-play-btn svg {
+        color: #000;
+        fill: #000;
+        width: 24px;
+        height: 24px;
+    }
+
+    .pill-play-btn:hover {
+        background: #e0e0e0 !important;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .volume-icon, .volume-bar-bg, .player-extras {
+        display: none !important;
+    }
+
+    /* ============================
+       HIDE CATEGORIES ON MOBILE
+       ============================ */
+    .category-toggle-btn {
+        display: none !important;
+    }
+
+    .category-sidebar {
+        display: none !important;
+    }
+
+    /* ============================
+       UP NEXT CARD - MOBILE
+       ============================ */
+    .up-next-card {
+        bottom: auto;
+        top: auto;
+        right: 5%;
+        left: 5%;
+        width: 90%;
+        position: fixed;
+        bottom: 224px;
+        border-radius: 16px;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        transform: translateY(40px) scale(0.95);
+    }
+    .up-next-card.show {
+        transform: translateY(0) scale(1);
+    }
+
+    /* ============================
+       MAIN CONTENT PADDING
+       ============================ */
+    main {
+        padding-bottom: 200px;
+    }
+}
+.progress-bar-bg {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth transitions for touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .mobile-btn {
+        transition: all 0.15s ease;
+    }
+    
+    .progress-bar-bg {
+        cursor: pointer;
+    }
+}
+
+/* Album cover rotation animations */
+.mobile-cover-image.spin {
+    animation: albumSpinCompact 3s linear infinite;
+}
+
+.mobile-cover-image {
+    animation: none;
+    transition: animation 0.3s ease;
+}
+
+/* Handle overflow for track titles on smallest screens */
+@media (max-width: 320px) {
+    .mobile-title {
+        font-size: 14px;
+    }
+    .mobile-artist {
+        font-size: 10px;
+    }
+    .mobile-cover-section {
+        min-height: 120px;
+        aspect-ratio: 1 / 0.5;
+    }
+    .mobile-buttons-section {
+        height: 60px;
+    }
+    .mobile-btn {
+        height: 60px;
+    }
+    main {
+        padding-bottom: 350px;
+    }
+}
