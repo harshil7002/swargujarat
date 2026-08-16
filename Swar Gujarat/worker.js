@@ -54,7 +54,7 @@ export default {
                 if (request.method === "GET") {
                     const response = await fetch(`${upstashUrl}/get/swar_playlist`, {
                         headers: { Authorization: `Bearer ${token}` },
-                        cache: "no-store"
+                        cf: { cacheTtl: 0 }
                     });
                     const data = await response.json();
                     return new Response(JSON.stringify(data), {
